@@ -32,14 +32,14 @@ def audience_simple(country):
 @st.cache_data
 def load_data():
     """return data : (df_agg, df_agg_sub, df_comments, df_time)"""
-    df_agg = pd.read_csv('data/archive/Aggregated_Metrics_by_Video.csv') #, parse_dates=['Video publish time'])
+    df_agg = pd.read_csv('data/archive/Aggregated_Metrics_By_Video.csv') #, parse_dates=['Video publish time'])
     
     df_agg['Video publish time'] = pd.to_datetime(df_agg['Video publish time'], format="mixed")
     df_agg['Avg_duration_sec'] = df_agg['Average view duration'].apply(lambda s: sum(60 ** (2 - p) * v for p, v in enumerate(map(int,s.split(':')))))
     df_agg['Engagement_ratio'] = (df_agg['Comments added'] + df_agg['Shares'] + df_agg['Dislikes'] + df_agg['Likes']) / df_agg.Views
     df_agg['Views / sub gained'] = df_agg['Views'] / df_agg['Subscribers gained']
     df_agg.sort_values("Video publish time", ascending=False, inplace=True)
-    df_agg_sub = pd.read_csv('data/archive/Aggregated_Metrics_by_Country_And_Subscriber_Status.csv')
+    df_agg_sub = pd.read_csv('data/archive/Aggregated_Metrics_By_Country_And_Subscriber_Status.csv')
     df_comments = pd.read_csv('data/archive/All_Comments_Final.csv')
     df_time = pd.read_csv('data/archive/Video_Performance_Over_Time.csv')
     df_time['Date'] = pd.to_datetime(df_time['Date'], format='mixed')
